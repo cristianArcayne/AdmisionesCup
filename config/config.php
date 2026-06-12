@@ -4,9 +4,9 @@
  * Modifica estos valores para que coincidan con tu servidor local
  */
 
-define('DB_HOST', 'localhost');
-define('DB_PORT', '5432');
-define('DB_NAME', 'bd_admision_cup_ficct');
-define('DB_USER', 'postgres');
-define('DB_PASS', '65101590'); // CAMBIA ESTO por tu contraseña de PostgreSQL (ej: '123456', o déjalo vacío '' si no tiene)
+define('DB_HOST', getenv('PGHOST') ?: 'localhost');
+define('DB_PORT', getenv('PGPORT') ?: '5432');
+define('DB_NAME', getenv('PGDATABASE') ?: 'bd_admision_cup_ficct');
+define('DB_USER', getenv('PGUSER') ?: 'postgres');
+define('DB_PASS', getenv('PGPASSWORD') ?: '65101590');
 ?>
