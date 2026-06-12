@@ -158,7 +158,7 @@ if (!$database_created) {
         exit;
     }
 }
-
+try {
     echo "⚙️ Ejecutando sentencias DDL para estructura de tablas...\n";
     flush();
 
