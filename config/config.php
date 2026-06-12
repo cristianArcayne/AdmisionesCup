@@ -1,12 +1,21 @@
 <?php
 /**
- * Credenciales de Acceso a PostgreSQL
- * Modifica estos valores para que coincidan con tu servidor local
+ * Credenciales de Acceso a PostgreSQL (Detectadas dinámicamente)
  */
 
-define('DB_HOST', getenv('PGHOST') ?: 'localhost');
-define('DB_PORT', getenv('PGPORT') ?: '5432');
-define('DB_NAME', getenv('PGDATABASE') ?: 'bd_admision_cup_ficct');
-define('DB_USER', getenv('PGUSER') ?: 'postgres');
-define('DB_PASS', getenv('PGPASSWORD') ?: '65101590');
+if (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'alwaysdata.net') !== false) {
+    // Credenciales de Producción en Alwaysdata
+    define('DB_HOST', 'postgresql-admisionescup.alwaysdata.net');
+    define('DB_PORT', '5432');
+    define('DB_NAME', 'admisionescup_bd');
+    define('DB_USER', 'admisionescup');
+    define('DB_PASS', '65101590');
+} else {
+    // Credenciales de Desarrollo Local (XAMPP)
+    define('DB_HOST', 'localhost');
+    define('DB_PORT', '5432');
+    define('DB_NAME', 'bd_admision_cup_ficct');
+    define('DB_USER', 'postgres');
+    define('DB_PASS', '65101590');
+}
 ?>
