@@ -5,11 +5,11 @@
  */
 
 session_start();
-require_once 'config/db.php';
+require_once '../config/db.php';
 
 // Validar que el usuario esté logueado y tenga el rol de 'admin'
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-    header('Location: login.php?err=' . urlencode('Acceso denegado.'));
+    header('Location: ../P_Seguridad/login.php?err=' . urlencode('Acceso denegado.'));
     exit;
 }
 
@@ -74,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             $carga_actual = (int)$stmt->fetchColumn();
 
             // Si ya tiene 4 grupos asignados, verificar si este nuevo grupo es uno de los que ya tiene
-            // (un docente puede dar más de una materia en un mismo grupo si fuera el caso, pero no puede tener más de 4 grupos/aulas distintas)
             if ($carga_actual >= 4) {
                 // Verificar si ya está asignado a este grupo
                 $stmt = $pdo->prepare("
@@ -172,7 +171,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carga de Docentes | FICCT</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <div class="dashboard-layout">
@@ -188,16 +187,16 @@ try {
                     <a href="admin_dashboard.php">Panel Principal</a>
                 </li>
                 <li>
-                    <a href="admin_estudiantes.php">Gestionar Estudiantes</a>
+                    <a href="../P_Postulantes/admin_estudiantes.php">Gestionar Estudiantes</a>
                 </li>
                 <li>
-                    <a href="admin_docentes.php">Gestionar Docentes</a>
+                    <a href="../P_Postulantes/admin_docentes.php">Gestionar Docentes</a>
                 </li>
                 <li class="active">
                     <a href="admin_asignaciones.php">Asignar Docentes</a>
                 </li>
                 <li style="margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                    <a href="logout.php" style="color: var(--error);">Cerrar Sesión</a>
+                    <a href="../P_Seguridad/logout.php" style="color: var(--error);">Cerrar Sesión</a>
                 </li>
             </ul>
         </aside>

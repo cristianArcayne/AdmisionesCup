@@ -5,16 +5,16 @@
  */
 
 session_start();
-require_once 'config/db.php';
+require_once '../config/db.php';
 
 // Si ya está logueado, redirigir al panel correspondiente
 if (isset($_SESSION['user_id'])) {
     if ($_SESSION['user_role'] === 'admin') {
-        header('Location: admin_dashboard.php');
+        header('Location: ../P_Academico/admin_dashboard.php');
     } elseif ($_SESSION['user_role'] === 'docente') {
-        header('Location: docente_dashboard.php');
+        header('Location: ../P_Academico/docente_dashboard.php');
     } elseif ($_SESSION['user_role'] === 'estudiante') {
-        header('Location: estudiante_dashboard.php');
+        header('Location: ../P_Academico/estudiante_dashboard.php');
     }
     exit;
 }
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $adm = $stmt_adm->fetch();
                     $_SESSION['user_realname'] = $adm ? $adm['nombre'] . ' ' . $adm['apellido'] : 'Administrador';
                     
-                    header('Location: admin_dashboard.php');
+                    header('Location: ../P_Academico/admin_dashboard.php');
                 } 
                 elseif ($user['rol_nombre'] === 'docente') {
                     $stmt_doc = $pdo->prepare("SELECT d.ID_docente, p.nombre, p.apellido 
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['docente_id'] = $doc ? $doc['id_docente'] : 0;
                     $_SESSION['user_realname'] = $doc ? $doc['nombre'] . ' ' . $doc['apellido'] : 'Docente';
                     
-                    header('Location: docente_dashboard.php');
+                    header('Location: ../P_Academico/docente_dashboard.php');
                 } 
                 elseif ($user['rol_nombre'] === 'estudiante') {
                     $stmt_est = $pdo->prepare("SELECT e.ID_estudiante, p.nombre, p.apellido 
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['estudiante_id'] = $est ? $est['id_estudiante'] : 0;
                     $_SESSION['user_realname'] = $est ? $est['nombre'] . ' ' . $est['apellido'] : 'Estudiante';
                     
-                    header('Location: estudiante_dashboard.php');
+                    header('Location: ../P_Academico/estudiante_dashboard.php');
                 } 
                 else {
                     $error = "Tu cuenta no tiene un rol válido asignado.";
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión | FICCT</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <div class="container" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </button>
 
                 <div style="display: flex; justify-content: center; align-items: center; font-size: 0.85rem;">
-                    <a href="index.php" style="color: var(--text-muted); text-decoration: none;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Volver al Inicio</a>
+                    <a href="../index.php" style="color: var(--text-muted); text-decoration: none;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Volver al Inicio</a>
                 </div>
             </form>
 

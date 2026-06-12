@@ -4,11 +4,11 @@
  */
 
 session_start();
-require_once 'config/db.php';
+require_once '../config/db.php';
 
 // Validar que el usuario esté logueado y tenga el rol de 'admin'
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-    header('Location: login.php?err=' . urlencode('Acceso denegado.'));
+    header('Location: ../P_Seguridad/login.php?err=' . urlencode('Acceso denegado.'));
     exit;
 }
 
@@ -223,7 +223,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrar Estudiantes | FICCT</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <div class="dashboard-layout">
@@ -236,7 +236,7 @@ try {
             
             <ul class="sidebar-menu">
                 <li>
-                    <a href="admin_dashboard.php">Panel Principal</a>
+                    <a href="../P_Academico/admin_dashboard.php">Panel Principal</a>
                 </li>
                 <li class="active">
                     <a href="admin_estudiantes.php">Gestionar Estudiantes</a>
@@ -245,10 +245,10 @@ try {
                     <a href="admin_docentes.php">Gestionar Docentes</a>
                 </li>
                 <li>
-                    <a href="admin_asignaciones.php">Asignar Docentes</a>
+                    <a href="../P_Academico/admin_asignaciones.php">Asignar Docentes</a>
                 </li>
                 <li style="margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                    <a href="logout.php" style="color: var(--error);">Cerrar Sesión</a>
+                    <a href="../P_Seguridad/logout.php" style="color: var(--error);">Cerrar Sesión</a>
                 </li>
             </ul>
         </aside>

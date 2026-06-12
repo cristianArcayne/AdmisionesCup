@@ -4,11 +4,11 @@
  */
 
 session_start();
-require_once 'config/db.php';
+require_once '../config/db.php';
 
 // Validar que el usuario esté logueado y tenga el rol de 'docente'
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'docente') {
-    header('Location: login.php?err=' . urlencode('Acceso denegado: Se requieren privilegios de Docente.'));
+    header('Location: ../P_Seguridad/login.php?err=' . urlencode('Acceso denegado: Se requieren privilegios de Docente.'));
     exit;
 }
 
@@ -150,7 +150,7 @@ if ($id_grupo_sel && $id_materia_sel) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planilla Docente | FICCT</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <div class="dashboard-layout">
@@ -182,7 +182,7 @@ if ($id_grupo_sel && $id_materia_sel) {
                 <?php endif; ?>
                 
                 <li style="margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                    <a href="logout.php" style="color: var(--error);">Cerrar Sesión</a>
+                    <a href="../P_Seguridad/logout.php" style="color: var(--error);">Cerrar Sesión</a>
                 </li>
             </ul>
         </aside>
@@ -210,7 +210,7 @@ if ($id_grupo_sel && $id_materia_sel) {
                 <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
 
-            <!-- FORMULARIO DE CALIFICACIÓN (CU10: Se activa sólo al seleccionar un alumno para calificar) -->
+            <!-- FORMULARIO DE CALIFICACIÓN -->
             <?php if ($calificar_student): ?>
                 <section class="card" style="margin-bottom: 40px; border-color: var(--primary);">
                     <h3 style="font-size: 1.4rem; margin-bottom: 20px; color: var(--primary);">Calificar Estudiante: <?= htmlspecialchars($calificar_student['nombre'] . ' ' . $calificar_student['apellido']) ?></h3>

@@ -3,7 +3,7 @@
  * Registro de Postulantes Simplificado (Sin Emojis)
  */
 
-require_once 'config/db.php';
+require_once '../config/db.php';
 
 // --- CONTROL DE AJAX: Verificación de CI Duplicado ---
 if (isset($_GET['check_ci'])) {
@@ -220,7 +220,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscripción CUP | FICCT</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <div class="container" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
@@ -260,7 +260,7 @@ try {
                         <div><strong>Contraseña:</strong> <code style="background: #f5f5f5; padding: 4px 8px; border-radius: 6px; color: var(--secondary); font-family: monospace; font-size: 1rem; border: 1px solid #e0e0e0;"><?= htmlspecialchars($success_data['password']) ?></code> <span style="font-size: 0.8rem; color: var(--text-muted);">(Primera letra de tu apellido + tu CI)</span></div>
                     </div>
 
-                    <a href="index.php" class="btn btn-primary" style="width: 100%;">Finalizar e Ir al Inicio</a>
+                    <a href="../index.php" class="btn btn-primary" style="width: 100%;">Finalizar e Ir al Inicio</a>
                 </div>
 
             <?php else: ?>
@@ -402,7 +402,7 @@ try {
                         <!-- PANEL QR -->
                         <div id="qr-payment-section">
                             <div class="qr-box" style="background: white; padding: 15px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 10px; border: 2px solid var(--primary); width: fit-content; margin: 20px auto;">
-                                <img src="assets/img/qr_pago.png" alt="Código QR de Pago" style="width: 200px; height: 200px; object-fit: contain; display: block;">
+                                <img src="../assets/img/qr_pago.png" alt="Código QR de Pago" style="width: 200px; height: 200px; object-fit: contain; display: block;">
                                 <p style="color: #333333; font-size: 0.9rem; font-weight: 600; text-align: center;">Escanear Código QR</p>
                             </div>
                             <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted);">
@@ -447,6 +447,6 @@ try {
 
     </div>
 
-    <script src="assets/js/app.js"></script>
+    <script src="../assets/js/app.js"></script>
 </body>
 </html>

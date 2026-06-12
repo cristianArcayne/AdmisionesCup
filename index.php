@@ -198,7 +198,7 @@ session_start();
         <div class="cards-grid">
             
             <!-- Tarjeta 1: Estudiante -->
-            <a href="login.php?role=estudiante" class="card">
+            <a href="P_Seguridad/login.php?role=estudiante" class="card">
                 <div class="icon-container">
                     <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" fill="#5E35B1"/>
@@ -209,7 +209,7 @@ session_start();
             </a>
 
             <!-- Tarjeta 2: Docente -->
-            <a href="login.php?role=docente" class="card">
+            <a href="P_Seguridad/login.php?role=docente" class="card">
                 <div class="icon-container">
                     <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <!-- Pizarra estilo Vector -->
@@ -229,7 +229,7 @@ session_start();
             </a>
 
             <!-- Tarjeta 3: Administrador -->
-            <a href="login.php?role=admin" class="card">
+            <a href="P_Seguridad/login.php?role=admin" class="card">
                 <div class="icon-container">
                     <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <!-- Laptop estilo la imagen -->
@@ -254,7 +254,7 @@ session_start();
 
         <!-- Botón de Registro de Postulantes -->
         <div class="bottom-actions">
-            <a href="register.php" class="btn-register">Registrarse como Postulante</a>
+            <a href="P_Postulantes/register.php" class="btn-register">Registrarse como Postulante</a>
         </div>
 
         <!-- Enlaces técnicos del pie de página -->
