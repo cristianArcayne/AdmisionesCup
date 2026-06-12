@@ -125,7 +125,7 @@ try {
     $database_created = true;
 } catch (PDOException $e) {
     // Si no conecta, podría ser porque la base de datos no existe (común en local)
-    echo "⚠️ No se pudo conectar directamente a '" . DB_NAME . "'. Intentando crearla...\n";
+    echo "⚠️ No se pudo conectar directamente a '" . DB_NAME . "'. Error: " . $e->getMessage() . "\n";
 }
 
 if (!$database_created) {
