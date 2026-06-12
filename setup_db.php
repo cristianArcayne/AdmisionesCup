@@ -112,37 +112,52 @@ require_once 'config/config.php';
 echo "🔌 Conectando al servidor PostgreSQL (host: " . DB_HOST . ", puerto: " . DB_PORT . ")...\n";
 flush();
 
+$database_created = false;
+$pdo = null;
+
+// Intentar conectar directamente a la base de datos destino
 try {
-    // 1. Conectar a PostgreSQL para crear la base de datos si no existe
-    $dsn_base = "pgsql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=postgres";
-    $pdo_base = new PDO($dsn_base, DB_USER, DB_PASS, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
-
-    // Verificar si la base de datos existe
-    $stmt = $pdo_base->query("SELECT 1 FROM pg_database WHERE datname = '" . DB_NAME . "'");
-    $exists = $stmt->fetchColumn();
-
-    if (!$exists) {
-        echo "📁 Creando la base de datos '" . DB_NAME . "'...\n";
-        $pdo_base->exec("CREATE DATABASE " . DB_NAME);
-        echo "<span class='success'>✓ Base de datos '" . DB_NAME . "' creada exitosamente.</span>\n";
-    } else {
-        echo "📁 La base de datos '" . DB_NAME . "' ya existe. Procediendo a recrear las tablas...\n";
-    }
-} catch (PDOException $e) {
-    echo "<span class='error'>❌ Error conectando a PostgreSQL: " . $e->getMessage() . "</span>\n";
-    echo "Por favor verifica que PostgreSQL esté ejecutándose y que tu usuario/contraseña en config/config.php sean los correctos.\n";
-    echo "</div><button onclick='window.location.reload()' class='btn'>Reintentar Conexión</button></div></body></html>";
-    exit;
-}
-
-try {
-    // 2. Conectarse a la base de datos específica
     $dsn_app = "pgsql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME;
     $pdo = new PDO($dsn_app, DB_USER, DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
+    echo "📁 Conexión establecida con la base de datos '" . DB_NAME . "'. Procediendo a recrear las tablas...\n";
+    $database_created = true;
+} catch (PDOException $e) {
+    // Si no conecta, podría ser porque la base de datos no existe (común en local)
+    echo "⚠️ No se pudo conectar directamente a '" . DB_NAME . "'. Intentando crearla...\n";
+}
+
+if (!$database_created) {
+    try {
+        // Conectar a la base de datos 'postgres' del sistema para crear la base de datos
+        $dsn_base = "pgsql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=postgres";
+        $pdo_base = new PDO($dsn_base, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ]);
+
+        // Verificar si la base de datos existe
+        $stmt = $pdo_base->query("SELECT 1 FROM pg_database WHERE datname = '" . DB_NAME . "'");
+        $exists = $stmt->fetchColumn();
+
+        if (!$exists) {
+            echo "📁 Creando la base de datos '" . DB_NAME . "'...\n";
+            $pdo_base->exec("CREATE DATABASE " . DB_NAME);
+            echo "<span class='success'>✓ Base de datos '" . DB_NAME . "' creada exitosamente.</span>\n";
+        }
+
+        // Conectarse ahora sí a la nueva base de datos
+        $dsn_app = "pgsql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME;
+        $pdo = new PDO($dsn_app, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ]);
+    } catch (PDOException $e) {
+        echo "<span class='error'>❌ Error conectando a PostgreSQL: " . $e->getMessage() . "</span>\n";
+        echo "Por favor verifica que PostgreSQL esté ejecutándose y que tu usuario/contraseña en config/config.php sean los correctos.\n";
+        echo "</div><button onclick='window.location.reload()' class='btn'>Reintentar Conexión</button></div></body></html>";
+        exit;
+    }
+}
 
     echo "⚙️ Ejecutando sentencias DDL para estructura de tablas...\n";
     flush();
