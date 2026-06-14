@@ -104,13 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <div class="glass-panel login-container" style="padding: 40px; width: 100%; max-width: 450px;">
             
-            <!-- CONEXIÓN VISUAL -->
-            <div class="card" style="background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 16px; margin-bottom: 25px; font-size: 0.85rem; text-align: left; line-height: 1.5;">
-                <div style="font-weight: bold; margin-bottom: 4px; color: var(--primary);">Conexión Visual:</div>
-                <strong>Vista:</strong> login.blade.php<br>
-                <strong>Controlador:</strong> AuthController<br>
-                <strong>Funciones:</strong> iniciarSesion(), validarCredenciales(), mostrarMensaje()
-            </div>
 
             <div class="logo-container" style="margin-bottom: 20px;">
                 <h2 class="gradient-text" style="font-size: 1.8rem; margin: 0;">Portal de Acceso</h2>
@@ -145,7 +138,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="password" style="margin: 0;">Contraseña</label>
                         <span style="font-size: 0.8rem; color: var(--text-muted); opacity: 0.8;">CI para estudiantes</span>
                     </div>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••••••" required>
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="••••••••••••" required style="padding-right: 75px; width: 100%;">
+                        <button type="button" id="togglePassword" style="position: absolute; right: 10px; background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 0.85rem; font-weight: 500; padding: 5px;">Mostrar</button>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 20px;">
@@ -207,6 +203,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 const form = document.getElementById('loginForm');
                 form.parentNode.insertBefore(alertDiv, form);
+            }
+        });
+
+        // Toggle Mostrar/Ocultar contraseña
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.innerText = 'Ocultar';
+            } else {
+                passwordInput.type = 'password';
+                this.innerText = 'Mostrar';
             }
         });
     </script>
