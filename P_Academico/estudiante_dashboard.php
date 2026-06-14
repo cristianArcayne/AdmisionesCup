@@ -98,6 +98,13 @@ try {
         <!-- ÁREA PRINCIPAL DE CONTENIDO -->
         <main class="main-content">
             
+            <!-- CONEXIÓN VISUAL -->
+            <div class="card" style="background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 16px; margin-bottom: 25px; font-size: 0.85rem; text-align: left; line-height: 1.5;">
+                <div style="font-weight: bold; margin-bottom: 4px; color: var(--primary);">Conexión Visual:</div>
+                <strong>Vista:</strong> estudiante_dashboard.blade.php<br>
+                <strong>Controlador:</strong> EstudianteController<br>
+                <strong>Funciones:</strong> obtenerNotas(), calcularPromedio(), obtenerEstado()
+            </div>
             <!-- ENCABEZADO -->
             <header class="dash-header">
                 <div>

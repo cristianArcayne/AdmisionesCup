@@ -12,7 +12,7 @@ if (isset($_SESSION['user_id'])) {
     if ($_SESSION['user_role'] === 'admin') {
         header('Location: ../P_Academico/admin_dashboard.php');
     } elseif ($_SESSION['user_role'] === 'docente') {
-        header('Location: ../P_Academico/docente_dashboard.php');
+        header('Location: ../P_Academico/notas.php');
     } elseif ($_SESSION['user_role'] === 'estudiante') {
         header('Location: ../P_Academico/estudiante_dashboard.php');
     }
@@ -23,19 +23,19 @@ $role_hint = isset($_GET['role']) ? $_GET['role'] : ''; // 'admin', 'docente', '
 $error = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
+    $correo = trim($_POST['correo'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-    if (empty($username) || empty($password)) {
-        $error = "Por favor ingresa tu usuario y contraseña.";
+    if (empty($correo) || empty($password)) {
+        $error = "Por favor ingresa tu correo y contraseña.";
     } else {
         try {
-            // Buscar usuario en la base de datos (con coincidencia insensible a mayúsculas/minúsculas)
+            // Buscar usuario en la base de datos por Correo
             $stmt = $pdo->prepare("SELECT u.*, r.nombre AS rol_nombre 
                                    FROM Usuarios u 
                                    JOIN Roles r ON u.ID_rol = r.ID_rol 
-                                   WHERE LOWER(u.Username) = LOWER(:username) AND u.Estado = TRUE");
-            $stmt->execute(['username' => $username]);
+                                   WHERE LOWER(u.Correo) = LOWER(:correo) AND u.Estado = TRUE");
+            $stmt->execute(['correo' => $correo]);
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['password'])) {
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['docente_id'] = $doc ? $doc['id_docente'] : 0;
                     $_SESSION['user_realname'] = $doc ? $doc['nombre'] . ' ' . $doc['apellido'] : 'Docente';
                     
-                    header('Location: ../P_Academico/docente_dashboard.php');
+                    header('Location: ../P_Academico/notas.php');
                 } 
                 elseif ($user['rol_nombre'] === 'estudiante') {
                     $stmt_est = $pdo->prepare("SELECT e.ID_estudiante, p.nombre, p.apellido 
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 exit;
             } else {
-                $error = "Usuario o contraseña incorrectos.";
+                $error = "Correo o contraseña incorrectos.";
             }
         } catch (PDOException $e) {
             $error = "Error al autenticar: " . $e->getMessage();
@@ -102,34 +102,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
         
-        <div class="glass-panel login-container" style="padding: 40px;">
+        <div class="glass-panel login-container" style="padding: 40px; width: 100%; max-width: 450px;">
             
-            <div class="logo-container" style="margin-bottom: 25px;">
-                <h2 class="gradient-text" style="font-size: 1.8rem;">Portal de Acceso</h2>
+            <!-- CONEXIÓN VISUAL -->
+            <div class="card" style="background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 16px; margin-bottom: 25px; font-size: 0.85rem; text-align: left; line-height: 1.5;">
+                <div style="font-weight: bold; margin-bottom: 4px; color: var(--primary);">Conexión Visual:</div>
+                <strong>Vista:</strong> login.blade.php<br>
+                <strong>Controlador:</strong> AuthController<br>
+                <strong>Funciones:</strong> iniciarSesion(), validarCredenciales(), mostrarMensaje()
+            </div>
+
+            <div class="logo-container" style="margin-bottom: 20px;">
+                <h2 class="gradient-text" style="font-size: 1.8rem; margin: 0;">Portal de Acceso</h2>
             </div>
 
             <!-- TÍTULO DINÁMICO SEGÚN ROL -->
             <?php if ($role_hint === 'admin'): ?>
-                <p style="color: var(--primary); font-weight: 600; margin-top: -10px; margin-bottom: 25px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Área Administrativa</p>
+                <p style="color: var(--primary); font-weight: 600; margin-top: -10px; margin-bottom: 25px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; text-align: center;">Área Administrativa</p>
             <?php elseif ($role_hint === 'docente'): ?>
-                <p style="color: var(--accent); font-weight: 600; margin-top: -10px; margin-bottom: 25px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Portal Docente</p>
+                <p style="color: var(--secondary); font-weight: 600; margin-top: -10px; margin-bottom: 25px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; text-align: center;">Portal Docente</p>
             <?php elseif ($role_hint === 'estudiante'): ?>
-                <p style="color: var(--success); font-weight: 600; margin-top: -10px; margin-bottom: 25px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Portal de Estudiantes</p>
+                <p style="color: var(--success); font-weight: 600; margin-top: -10px; margin-bottom: 25px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; text-align: center;">Portal de Estudiantes</p>
             <?php else: ?>
-                <p style="color: var(--text-muted); margin-top: -10px; margin-bottom: 25px;">Ingresa tus credenciales para acceder a la plataforma.</p>
+                <p style="color: var(--text-muted); margin-top: -10px; margin-bottom: 25px; text-align: center;">Ingresa tus credenciales para acceder a la plataforma.</p>
             <?php endif; ?>
 
             <!-- ALERTA DE ERROR -->
             <?php if (!empty($error)): ?>
-                <div class="alert alert-error" style="text-align: left; font-size: 0.9rem;">
+                <div class="alert alert-error" style="text-align: left; font-size: 0.9rem; margin-bottom: 20px;">
                     <?= htmlspecialchars($error) ?>
                 </div>
             <?php endif; ?>
 
-            <form method="POST" action="login.php">
+            <form id="loginForm" method="POST" action="login.php" novalidate>
                 <div class="form-group">
-                    <label for="username">Nombre de Usuario</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Ej: admin o carlos_m" required autofocus>
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" class="form-control" placeholder="Ej: admin@univ.edu" required autofocus>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 25px;">
@@ -141,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 20px;">
-                    Iniciar Sesión
+                    Ingresar
                 </button>
 
                 <div style="display: flex; justify-content: center; align-items: center; font-size: 0.85rem;">
@@ -152,5 +160,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
     </div>
+
+    <!-- VALIDACIONES JS -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            const correoInput = document.getElementById('correo');
+            const passwordInput = document.getElementById('password');
+            let valid = true;
+            let errorMessage = "";
+
+            // Limpiar alertas previas
+            const existingAlert = document.querySelector('.alert-error');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Validar Correo Obligatorio
+            if (!correoInput.value.trim()) {
+                valid = false;
+                errorMessage = "El correo electrónico es obligatorio.";
+            } 
+            // Validar Formato de Correo
+            else {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(correoInput.value.trim())) {
+                    valid = false;
+                    errorMessage = "Por favor ingresa un formato de correo electrónico válido.";
+                }
+            }
+
+            // Validar Contraseña Obligatoria
+            if (valid && !passwordInput.value.trim()) {
+                valid = false;
+                errorMessage = "La contraseña es obligatoria.";
+            }
+
+            if (!valid) {
+                event.preventDefault();
+                // Insertar alerta
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-error';
+                alertDiv.style.textAlign = 'left';
+                alertDiv.style.fontSize = '0.9rem';
+                alertDiv.style.marginBottom = '20px';
+                alertDiv.innerText = errorMessage;
+                
+                const form = document.getElementById('loginForm');
+                form.parentNode.insertBefore(alertDiv, form);
+            }
+        });
+    </script>
 </body>
 </html>
