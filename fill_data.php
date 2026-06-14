@@ -49,7 +49,7 @@ try {
             $nombre = ($genero === 'M') ? $nombres_m[array_rand($nombres_m)] : $nombres_f[array_rand($nombres_f)];
             $apellido = $apellidos[array_rand($apellidos)] . ' ' . $apellidos[array_rand($apellidos)];
             $ci = (string)rand(6000000, 8999999) . "-SC";
-            $correo = strtolower(str_replace(' ', '', $nombre)) . rand(10, 99) . "@gmail.com";
+            $correo = strtolower(str_replace(' ', '', $nombre)) . rand(100000, 999999) . "@gmail.com";
             $colegio = "Colegio Nacional " . $apellidos[array_rand($apellidos)];
             
             // Carreras opciones
@@ -95,7 +95,7 @@ try {
 
             // D. Crear Usuario Estudiante (Pass = CI)
             $pass_hash = password_hash($ci, PASSWORD_DEFAULT);
-            $username = strtolower(str_replace(' ', '', $nombre)) . rand(10, 99);
+            $username = strtolower(str_replace(' ', '', $nombre)) . rand(100000, 999999);
             
             $stmt = $pdo->prepare("INSERT INTO Usuarios (Username, Password, Correo, ID_rol) VALUES (:user, :pass, :correo, :rol)");
             $stmt->execute([
